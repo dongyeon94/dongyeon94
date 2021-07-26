@@ -6,8 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -17,8 +15,8 @@ import java.util.Set;
 @Data
 @DynamicInsert
 public class Recipe {
-    @Id
-    @GeneratedValue
+
+    @Id @GeneratedValue
     @ColumnDescription("PK")
     private Long    id;
 
@@ -57,6 +55,4 @@ public class Recipe {
 
     @ColumnDescription("리뷰 수")
     private int     countReview;
-
-
 }

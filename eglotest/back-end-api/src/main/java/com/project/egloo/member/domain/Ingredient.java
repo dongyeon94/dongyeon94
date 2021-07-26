@@ -1,8 +1,8 @@
 package com.project.egloo.member.domain;
 
-
 import com.project.egloo.common.ColumnDescription;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,12 +14,19 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Data
-public class Category {
+@DynamicInsert
+public class Ingredient {
 
-    @Id@GeneratedValue
+    @Id @GeneratedValue
     @ColumnDescription("PK")
     private Long    id;
 
-    @ColumnDescription("카테고리 이름")
-    private String  name;
+    @ColumnDescription("PK")
+    private String name;
+
+    @ColumnDescription("PK")
+    private String ingredientImage;
+
+    @ColumnDescription("PK")
+    private int price;
 }
