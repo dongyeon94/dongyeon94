@@ -1,7 +1,6 @@
-package com.project.egloo.member.controller;
+package com.project.egloo.recipe.controller;
 
-import com.project.egloo.member.domain.Recipe;
-import com.project.egloo.member.service.RecipeService;
+import com.project.egloo.recipe.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,14 @@ public class RecipeController {
     }
 
     @PostMapping("/addRecipe")
-    public HashMap addRecipe(Recipe recipe){
+    public HashMap addRecipe(String recipeName, HashMap<String,Integer> ingredientAmount){
+        recipeService.addNewRecipe(recipeName, ingredientAmount);
+        return null;
+    }
+
+    @PostMapping("/tt")
+    public HashMap ttt(){
+        recipeService.tst();
         return null;
     }
 }
