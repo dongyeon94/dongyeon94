@@ -2,14 +2,14 @@ package com.project.egloo.recipe.service;
 
 import com.project.egloo.common.StatusCode;
 import com.project.egloo.ingredient.domain.Ingredient;
-import com.project.egloo.ingredient.domain.IngredientRecipeMapping;
-import com.project.egloo.ingredient.repository.IngredientRecipeMappingRepository;
 import com.project.egloo.ingredient.repository.IngredientRepository;
 import com.project.egloo.recipe.domain.Recipe;
 import com.project.egloo.recipe.repository.CategoryRepository;
 import com.project.egloo.recipe.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -17,8 +17,7 @@ import java.util.*;
 @Service
 public class RecipeService {
 
-    @Autowired
-    private IngredientRecipeMappingRepository ingredientRecipeMappingRepository;
+
     @Autowired
     private RecipeRepository recipeRepository;
     @Autowired
@@ -28,15 +27,15 @@ public class RecipeService {
 
     public HashMap getRecipeByIngredients(ArrayList lis) {
         ArrayList intersection = new ArrayList();
-        for(int i=0; i < lis.size(); i++){
-            List mappingList =  ingredientRecipeMappingRepository.findByIngredient_id(Long.parseLong((String) lis.get(i)));
-            List recipeNames = new ArrayList();
-            for(int j=0; j < mappingList.size(); j++){
-                IngredientRecipeMapping map = (IngredientRecipeMapping) mappingList.get(j);
-                recipeNames.add(map.getRecipe().getName());
-            }
-            intersection.add(recipeNames);
-        }
+//        for(int i=0; i < lis.size(); i++){
+//            List mappingList =  ingredientRecipeMappingRepository.findByIngredient_id(Long.parseLong((String) lis.get(i)));
+//            List recipeNames = new ArrayList();
+//            for(int j=0; j < mappingList.size(); j++){
+//                IngredientRecipeMapping map = (IngredientRecipeMapping) mappingList.get(j);
+//                recipeNames.add(map.getRecipe().getName());
+//            }
+//            intersection.add(recipeNames);
+//        }
         return  response(intersection(intersection));
     }
 
@@ -58,38 +57,26 @@ public class RecipeService {
         recipe.setName(recipeName);
         recipeRepository.save(recipe);
 
-        Recipe recipeObject  = recipeRepository.findByName(recipeName);
-        recipeSave(recipeObject, ingredientAmount);
-//        Iterator iter = ingredientAmount.keySet().iterator();
-//        System.out.println(iter.toString());
-//        for(String key : ingredientAmount.keySet()) {
-//            IngredientRecipeMapping ingredientRecipeMapping = new IngredientRecipeMapping();
-//
-//            ingredientRecipeMapping.setRecipe(re);
-//            Ingredient ie = ingredientRepository.findByName(key);
-//            ingredientRecipeMapping.setIngredient(ie);
-//            ingredientRecipeMapping.setQuantity(ingredientAmount.get(key));
-//
-//            ingredientRecipeMappingRepository.save(ingredientRecipeMapping);
-//        }
+        Optional<Recipe> recipeObject  = recipeRepository.findByName(recipeName);
+        recipeSave(recipeObject.get(), ingredientAmount);
 
-        return response(StatusCode.SUCCESS_OK);
+        return response(HttpStatus.OK);
     }
 
 
     @Transactional
     public void recipeSave(Recipe recipe, HashMap<String,Integer> ingredientAmount){
 
-        for(String key : ingredientAmount.keySet()) {
-            IngredientRecipeMapping ingredientRecipeMapping = new IngredientRecipeMapping();
-
-            ingredientRecipeMapping.setRecipe(recipe);
-            Ingredient ie = ingredientRepository.findByName(key);
-            ingredientRecipeMapping.setIngredient(ie);
-            ingredientRecipeMapping.setQuantity(ingredientAmount.get(key));
-
-            ingredientRecipeMappingRepository.recipeInsert(ingredientRecipeMapping);
-        }
+//        for(String key : ingredientAmount.keySet()) {
+//            IngredientRecipeMapping ingredientRecipeMapping = new IngredientRecipeMapping();
+//
+//            ingredientRecipeMapping.setRecipe(recipe);
+//            Optional<Ingredient> ingredient = ingredientRepository.findByName(key);
+//            ingredientRecipeMapping.setIngredient(ingredient.get());
+//            ingredientRecipeMapping.setQuantity(ingredientAmount.get(key));
+//
+//            ingredientRecipeMappingRepository.recipeInsert(ingredientRecipeMapping);
+//        }
     }
 
     public HashMap response(Object object){
@@ -101,17 +88,21 @@ public class RecipeService {
     }
 
     @Transactional
-    public void tst() {
-        Recipe recipe  = recipeRepository.findByName("라면");
-        Ingredient ingredient = ingredientRepository.findByName("소고기");
+    public void tst() throws HttpRequestMethodNotSupportedException {
+        Optional<Recipe> recipe  = recipeRepository.findByName("re1");
+        Optional<Ingredient> ingredients =  ingredientRepository.findByName("감자");
+        Optional<Ingredient> ingredients2 =  ingredientRepository.findByName("고구마");
+        Recipe recipe1 = new Recipe();
 
-        IngredientRecipeMapping ingredientRecipeMapping = new IngredientRecipeMapping();
-        ingredientRecipeMapping.setRecipe(recipe);
-        ingredientRecipeMapping.setIngredient(ingredient);
-        ingredientRecipeMapping.setQuantity(99);
-        ingredientRecipeMapping.setCategory(null);
-        ingredientRecipeMapping.setCheckIngredient(true);
 
-        ingredientRecipeMappingRepository.save(ingredientRecipeMapping);
+        Set<Ingredient> li = new HashSet<>();
+        li.add(ingredients.get());
+        li.add(ingredients2.get());
+//        System.out.println("---1111111---------------");
+//
+        recipe1.setIngredients(li);
+        System.out.println(recipe1);
+        recipeRepository.save(recipe1);
+
     }
 }
