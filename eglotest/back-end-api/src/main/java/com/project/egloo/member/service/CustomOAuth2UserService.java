@@ -5,7 +5,10 @@ import com.project.egloo.member.domain.Social;
 import com.project.egloo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -36,7 +39,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         log.info("oAuth2Attribute : {}", oAuth2Attribute);
-        log.info("oAuth2AccessToken : {}", oAuth2AccessToken.toString());
+        log.info("oAuth2AccessToken : {}", oAuth2AccessToken.getTokenValue());
+
+
 //        saveuser(oAuth2Attribute);
         var memberAttribute = oAuth2Attribute.convertToMap();
 

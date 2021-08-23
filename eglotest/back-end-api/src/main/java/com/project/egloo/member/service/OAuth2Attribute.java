@@ -52,12 +52,12 @@ public class OAuth2Attribute {
         return map;
     }
 
-    public Userst toEntity() {
-        System.out.println("***********************************");
-        return Userst.builder()
-                .name(name)
-                .email(email)
-                .picture(picture)
-                .build();
-    }
+//    public Userst toEntity() {
+//        System.out.println("***********************************");
+//        return Userst.builder()
+//                .name(name)
+//                .email(email)
+//                .picture(picture)
+//                .build();
+//    }
 }
