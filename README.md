@@ -22,7 +22,6 @@
 <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
 <img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=aws&logoColor=white">
 <img src="https://img.shields.io/badge/kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white">
-<img src="https://img.shields.io/badge/c%2%2-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white">
 
 
 <!--
